@@ -40,6 +40,7 @@ func main() {
 
 	r.Patch("/api/series/{id}/status", UpdateSeriesStatus)
 	r.Patch("/api/series/{id}/episode", IncrementEpisode)
+	r.Patch("/api/series/{id}/upvote", UpvoteSeries)
 
 	// Start the server and log the URL.
 	log.Println("Server running on http://localhost:8080")
