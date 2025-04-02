@@ -192,3 +192,18 @@ func UpvoteSeries(w http.ResponseWriter, r *http.Request) {
 		Message: "Series upvoted",
 	})
 }
+
+// DownvoteSeries handles the PATCH request to downvote a series.
+func DownvoteSeries(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	result := db.Exec("UPDATE series SET ranking = ranking - 1 WHERE id = ?", id)
+	if result.Error != nil {
+		respondWithError(w, "Error downvoting series", http.StatusInternalServerError)
+		return
+	}
+
+	respondWithJSON(w, ApiResponse{
+		Success: true,
+		Message: "Series downvoted",
+	})
+}

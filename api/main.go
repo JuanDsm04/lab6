@@ -1,3 +1,4 @@
+// This file contains the main function to start the server and handle requests.
 package main
 
 import (
@@ -32,6 +33,7 @@ func main() {
 		MaxAge:           300,
 	}))
 
+	// Define the routes for the API.
 	r.Get("/api/series", GetAllSeries)
 	r.Get("/api/series/{id}", GetSeriesByID)
 	r.Post("/api/series", CreateSeries)
@@ -41,6 +43,7 @@ func main() {
 	r.Patch("/api/series/{id}/status", UpdateSeriesStatus)
 	r.Patch("/api/series/{id}/episode", IncrementEpisode)
 	r.Patch("/api/series/{id}/upvote", UpvoteSeries)
+	r.Patch("/api/series/{id}/downvote", DownvoteSeries)
 
 	// Start the server and log the URL.
 	log.Println("Server running on http://localhost:8080")
