@@ -125,3 +125,19 @@ func UpdateSeries(w http.ResponseWriter, r *http.Request) {
 		Series:  &req,
 	})
 }
+
+// DeleteSeries handles the DELETE request to remove a series from the database.
+func DeleteSeries(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	result := db.Delete(&Series{}, id)
+
+	if result.Error != nil {
+		respondWithError(w, "Error deleting series", http.StatusInternalServerError)
+		return
+	}
+
+	respondWithJSON(w, ApiResponse{
+		Success: true,
+		Message: "Series deleted",
+	})
+}
