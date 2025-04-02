@@ -39,6 +39,7 @@ func main() {
 	r.Delete("/api/series/{id}", DeleteSeries)
 
 	r.Patch("/api/series/{id}/status", UpdateSeriesStatus)
+	r.Patch("/api/series/{id}/episode", IncrementEpisode)
 
 	// Start the server and log the URL.
 	log.Println("Server running on http://localhost:8080")

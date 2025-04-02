@@ -162,3 +162,18 @@ func UpdateSeriesStatus(w http.ResponseWriter, r *http.Request) {
 		Message: "Status updated",
 	})
 }
+
+// IncrementEpisode handles the PATCH request to increment the last episode watched for a series.
+func IncrementEpisode(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	result := db.Exec("UPDATE series SET last_episode_watched = last_episode_watched + 1 WHERE id = ?", id)
+	if result.Error != nil {
+		respondWithError(w, "Error incrementing episode", http.StatusInternalServerError)
+		return
+	}
+
+	respondWithJSON(w, ApiResponse{
+		Success: true,
+		Message: "Episode incremented",
+	})
+}
