@@ -13,7 +13,7 @@ type Series struct {
 
 // ApiResponse represents the structure of an API response.
 type ApiResponse struct {
-	Success bool    `json:"success"`  			// Indicates whether the request was successful
-	Message string  `json:"message"`  			// Message related to the response
-	Series  *Series `json:"series,omitempty"` 	// Optional series data, included if available
+	Success bool    `json:"success"`	// Indicates whether the request was successful
+	Message string  `json:"message"`	// Message related to the response
+	Series  *Series `json:"series,omitempty"`	// Optional series data, included if available
 }
