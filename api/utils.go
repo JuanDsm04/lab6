@@ -1,5 +1,4 @@
 // This file contains functions to send JSON responses for success or error.
-
 package main
 
 import (
