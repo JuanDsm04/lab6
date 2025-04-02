@@ -77,3 +77,51 @@ func CreateSeries(w http.ResponseWriter, r *http.Request) {
 		Message: "Successful creation",
 	})
 }
+
+// UpdateSeries handles the PUT request to update an existing series in the database.
+func UpdateSeries(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	var req Series
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		respondWithError(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	if req.Title == "" || req.Status == "" {
+		respondWithError(w, "Title and status are required", http.StatusBadRequest)
+		return
+	}
+
+	if req.LastEpisodeWatched < 0 || req.Ranking < 0 {
+		respondWithError(w, "Last episode watched and ranking cannot be negative", http.StatusBadRequest)
+		return
+	}
+
+	if req.TotalEpisodes <= 0 {
+		respondWithError(w, "Total episodes must be greater than zero", http.StatusBadRequest)
+		return
+	}
+
+	if req.LastEpisodeWatched > req.TotalEpisodes {
+		respondWithError(w, "Last episode watched cannot be greater than total episodes", http.StatusBadRequest)
+		return
+	}
+
+	result := db.Exec(
+		"UPDATE series SET title = ?, status = ?, last_episode_watched = ?, total_episodes = ?, ranking = ? WHERE id = ?",
+		req.Title, req.Status, req.LastEpisodeWatched, req.TotalEpisodes, req.Ranking, id,
+	)
+
+	if result.Error != nil {
+		log.Println("Error updating series:", result.Error)
+		respondWithError(w, "Error updating series", http.StatusInternalServerError)
+		return
+	}
+
+	respondWithJSON(w, ApiResponse{
+		Success: true,
+		Message: "Series updated successfully",
+		Series:  &req,
+	})
+}

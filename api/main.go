@@ -35,6 +35,7 @@ func main() {
 	r.Get("/api/series", GetAllSeries)
 	r.Get("/api/series/{id}", GetSeriesByID)
 	r.Post("/api/series", CreateSeries)
+	r.Put("/api/series/{id}", UpdateSeries)
 	
 	// Start the server and log the URL.
 	log.Println("Server running on http://localhost:8080")
