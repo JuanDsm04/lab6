@@ -1,0 +1,91 @@
+**Series Tracker API - Documentation**
+
+## 1. Name and Description
+- **API Name**: Series Tracker API  
+- **Description**: API for managing a database of series/anime, allowing users to add, update, delete, and vote for series.  
+
+## 2. Base URL
+- **Base URL**: `http://localhost:8080/api/series` (for local environment)  
+
+## 3. Authentication
+- Currently, the API does not require authentication.  
+
+## 4. Available Endpoints
+
+### **Get all series**
+- **GET** `/api/series`
+- **Expected Response:**
+```json
+[
+   {
+      "id": 1,
+      "title": "Attack on Titan",
+      "status": "Watching",
+      "lastEpisodeWatched": 5,
+      "totalEpisodes": 75,
+      "ranking": 10
+   }
+]
+```
+
+### **Get a series by ID**
+- **GET** `/api/series/{id}`
+- **Parameters:** `id` (Series ID)
+
+### **Create a new series**
+- **POST** `/api/series`
+- **JSON Body:**
+```json
+{
+   "title": "Attack on Titan",
+   "status": "Watching",
+   "lastEpisodeWatched": 5,
+   "totalEpisodes": 75,
+   "ranking": 10
+}
+```
+- **Expected Response:**
+```json
+{
+   "success": true,
+   "message": "Successful creation"
+}
+```
+
+### **Update a series**
+- **PUT** `/api/series/{id}`
+- **Parameters:** `id` (Series ID)
+- **JSON Body:** Same format as POST
+
+### **Delete a series**
+- **DELETE** `/api/series/{id}`
+- **Parameters:** `id` (Series ID)
+
+### **Update series status**
+- **PATCH** `/api/series/{id}/status`
+- **JSON Body:**
+```json
+{
+   "status": "Completed"
+}
+```
+
+### **Increment last watched episode**
+- **PATCH** `/api/series/{id}/episode`
+
+### **Upvote a series**
+- **PATCH** `/api/series/{id}/upvote`
+
+### **Downvote a series**
+- **PATCH** `/api/series/{id}/downvote`
+
+## 5. Response Codes
+- `200 OK` → Request successful.
+- `201 Created` → Successfully created.
+- `400 Bad Request` → Invalid or missing data.
+- `404 Not Found` → Series not found.
+- `500 Internal Server Error` → Server error.
+
+## 6. Additional Notes
+- Uses PostgreSQL as the database.
+- Implemented with Go and `go-chi` for routing.
