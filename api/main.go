@@ -38,6 +38,8 @@ func main() {
 	r.Put("/api/series/{id}", UpdateSeries)
 	r.Delete("/api/series/{id}", DeleteSeries)
 
+	r.Patch("/api/series/{id}/status", UpdateSeriesStatus)
+
 	// Start the server and log the URL.
 	log.Println("Server running on http://localhost:8080")
 	http.ListenAndServe(":8080", r)

@@ -141,3 +141,24 @@ func DeleteSeries(w http.ResponseWriter, r *http.Request) {
 		Message: "Series deleted",
 	})
 }
+
+// UpdateSeriesStatus handles the PATCH request to update the status of a series.
+func UpdateSeriesStatus(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	var req struct { Status string `json:"status"` }
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		respondWithError(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	result := db.Exec("UPDATE series SET status = ? WHERE id = ?", req.Status, id)
+	if result.Error != nil {
+		respondWithError(w, "Error updating status", http.StatusInternalServerError)
+		return
+	}
+
+	respondWithJSON(w, ApiResponse{
+		Success: true,
+		Message: "Status updated",
+	})
+}
