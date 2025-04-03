@@ -1,17 +1,18 @@
 # MyApplication API
-This is an API built with **Go**, using the Chi router and **PostgreSQL** database. It provides endpoints for managing TV series, allowing CRUD operations.
+This API is developed using Go, leveraging the Chi router and a PostgreSQL database. It offers endpoints to perform CRUD operations for managing TV series.
 
 ## Getting Started
-The repository provides a `docker-compose.yml` file with the necessary instructions to build and run the API inside containers.
+The repository contains a `docker-compose.yml` file that provides the required setup to build and deploy the API within containers.
 
 ### 1. Clone the repository
+To get started, clone the repository and navigate into the project directory:
 ```sh
 git clone https://github.com/JuanDsm04/lab6.git
 cd lab6
 ```
 
-### 2. Build and run the containers
-With Docker installed, run:
+### 2. Build and launch the containers
+Ensure Docker is installed, then execute:
 ```sh
 docker compose up --build
 ```
@@ -31,9 +32,9 @@ docker compose up --build
 | `PATCH` | `/api/series/{id}/downvote`| Downvote a series                   |
 
 ## Swagger Documentation
-This API includes **Swagger UI** for easy documentation and testing.
+Swagger UI is integrated for easy API exploration and testing.
 
-Once the server is running, open in your browser:
+Once the server is running, access it in your browser:
 ```
 http://localhost:8080/swagger/index.html
 ```
