@@ -1,4 +1,4 @@
-# MyApplication API
+# Series Tracker API
 This API is developed using Go, leveraging the Chi router and a PostgreSQL database. It offers endpoints to perform CRUD operations for managing TV series.
 
 ## Getting Started
