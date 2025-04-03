@@ -7,7 +7,13 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-// GetAllSeries handles the GET request to retrieve all series from the database.
+// GetAllSeries retrieves all series.
+// @Summary Retrieves all series
+// @Description Returns a list of series stored in the database.
+// @Tags series
+// @Produce json
+// @Success 200 {array} Series
+// @Router /api/series [get]
 func GetAllSeries(w http.ResponseWriter, r *http.Request) {
 	var series []Series
 	result := db.Find(&series)
@@ -19,7 +25,14 @@ func GetAllSeries(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, series)
 }
 
-// GetSeriesByID handles the GET request to retrieve a specific series by its ID from the database.
+// GetSeriesByID retrieves a specific series by its ID.
+// @Summary Retrieves a series by ID
+// @Description Returns a series stored in the database based on the provided ID.
+// @Tags series
+// @Produce json
+// @Param id path int true "Series ID"
+// @Success 200 {object} Series
+// @Router /api/series/{id} [get]
 func GetSeriesByID(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	var series Series
@@ -32,7 +45,15 @@ func GetSeriesByID(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, series)
 }
 
-// CreateSeries handles the POST request to create a new series in the database.
+// CreateSeries adds a new series.
+// @Summary Creates a new series
+// @Description Allows adding a series to the database.
+// @Tags series
+// @Accept json
+// @Produce json
+// @Param series body Series true "Series data"
+// @Success 201 {object} Series
+// @Router /api/series [post]
 func CreateSeries(w http.ResponseWriter, r *http.Request) {
 	var req Series
 
@@ -78,7 +99,16 @@ func CreateSeries(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// UpdateSeries handles the PUT request to update an existing series in the database.
+// UpdateSeries updates an existing series.
+// @Summary Updates a series
+// @Description Allows modifying a series in the database.
+// @Tags series
+// @Accept json
+// @Produce json
+// @Param id path int true "Series ID"
+// @Param series body Series true "Updated series data"
+// @Success 200 {object} Series
+// @Router /api/series/{id} [put]
 func UpdateSeries(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	var req Series
@@ -126,7 +156,13 @@ func UpdateSeries(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// DeleteSeries handles the DELETE request to remove a series from the database.
+// DeleteSeries removes a series.
+// @Summary Deletes a series
+// @Description Deletes a series based on its ID.
+// @Tags series
+// @Param id path int true "Series ID"
+// @Success 200 {string} string "Series deleted"
+// @Router /api/series/{id} [delete]
 func DeleteSeries(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	result := db.Delete(&Series{}, id)
@@ -142,7 +178,16 @@ func DeleteSeries(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// UpdateSeriesStatus handles the PATCH request to update the status of a series.
+// UpdateSeriesStatus updates the status of a series.
+// @Summary Update the status of a series
+// @Description Updates the status field of a series in the database.
+// @Tags series
+// @Accept json
+// @Produce json
+// @Param id path int true "Series ID"
+// @Param status body string true "New status"
+// @Success 200 {object} ApiResponse
+// @Router /api/series/{id}/status [patch]
 func UpdateSeriesStatus(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	var req struct { Status string `json:"status"` }
@@ -163,7 +208,13 @@ func UpdateSeriesStatus(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// IncrementEpisode handles the PATCH request to increment the last episode watched for a series.
+// IncrementEpisode increments the last episode watched of a series.
+// @Summary Increments the last episode watched
+// @Description Increments the last_episode_watched field of a series.
+// @Tags series
+// @Param id path int true "Series ID"
+// @Success 200 {object} ApiResponse
+// @Router /api/series/{id}/episode [patch]
 func IncrementEpisode(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	result := db.Exec("UPDATE series SET last_episode_watched = last_episode_watched + 1 WHERE id = ?", id)
@@ -178,7 +229,13 @@ func IncrementEpisode(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// UpvoteSeries handles the PATCH request to upvote a series.
+// UpvoteSeries increases the ranking of a series.
+// @Summary Upvote a series
+// @Description Increases the ranking field of a series by 1.
+// @Tags series
+// @Param id path int true "Series ID"
+// @Success 200 {object} ApiResponse
+// @Router /api/series/{id}/upvote [patch]
 func UpvoteSeries(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	result := db.Exec("UPDATE series SET ranking = ranking + 1 WHERE id = ?", id)
@@ -193,7 +250,13 @@ func UpvoteSeries(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// DownvoteSeries handles the PATCH request to downvote a series.
+// DownvoteSeries decreases the ranking of a series by 1.
+// @Summary Downvotes a series
+// @Description Decreases the ranking field of a series by 1.
+// @Tags series
+// @Param id path int true "Series ID"
+// @Success 200 {object} ApiResponse
+// @Router /api/series/{id}/downvote [patch]
 func DownvoteSeries(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	result := db.Exec("UPDATE series SET ranking = ranking - 1 WHERE id = ?", id)

@@ -1,4 +1,9 @@
-// This file contains the main function to start the server and handle requests.
+// @title Series API
+// @version 1.0
+// @description API for series management.
+// @host localhost:8080
+// @BasePath /api
+
 package main
 
 import (
@@ -8,6 +13,8 @@ import (
 	"github.com/go-chi/cors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"github.com/swaggo/http-swagger"
+	_ "main/docs"
 )
 
 var db *gorm.DB
@@ -44,6 +51,8 @@ func main() {
 	r.Patch("/api/series/{id}/episode", IncrementEpisode)
 	r.Patch("/api/series/{id}/upvote", UpvoteSeries)
 	r.Patch("/api/series/{id}/downvote", DownvoteSeries)
+
+	r.Get("/swagger/*", httpSwagger.WrapHandler)
 
 	// Start the server and log the URL.
 	log.Println("Server running on http://localhost:8080")

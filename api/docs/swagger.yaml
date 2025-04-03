@@ -1,0 +1,213 @@
+basePath: /api
+definitions:
+  main.ApiResponse:
+    properties:
+      message:
+        description: Message related to the response
+        type: string
+      series:
+        allOf:
+        - $ref: '#/definitions/main.Series'
+        description: Optional series data, included if available
+      success:
+        description: Indicates whether the request was successful
+        type: boolean
+    type: object
+  main.Series:
+    properties:
+      id:
+        type: integer
+      lastEpisodeWatched:
+        type: integer
+      ranking:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+      totalEpisodes:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for series management.
+  title: Series API
+  version: "1.0"
+paths:
+  /api/series:
+    get:
+      description: Returns a list of series stored in the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Series'
+            type: array
+      summary: Retrieves all series
+      tags:
+      - series
+    post:
+      consumes:
+      - application/json
+      description: Allows adding a series to the database.
+      parameters:
+      - description: Series data
+        in: body
+        name: series
+        required: true
+        schema:
+          $ref: '#/definitions/main.Series'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.Series'
+      summary: Creates a new series
+      tags:
+      - series
+  /api/series/{id}:
+    delete:
+      description: Deletes a series based on its ID.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Series deleted
+          schema:
+            type: string
+      summary: Deletes a series
+      tags:
+      - series
+    get:
+      description: Returns a series stored in the database based on the provided ID.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Series'
+      summary: Retrieves a series by ID
+      tags:
+      - series
+    put:
+      consumes:
+      - application/json
+      description: Allows modifying a series in the database.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated series data
+        in: body
+        name: series
+        required: true
+        schema:
+          $ref: '#/definitions/main.Series'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Series'
+      summary: Updates a series
+      tags:
+      - series
+  /api/series/{id}/downvote:
+    patch:
+      description: Decreases the ranking field of a series by 1.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ApiResponse'
+      summary: Downvotes a series
+      tags:
+      - series
+  /api/series/{id}/episode:
+    patch:
+      description: Increments the last_episode_watched field of a series.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ApiResponse'
+      summary: Increments the last episode watched
+      tags:
+      - series
+  /api/series/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Updates the status field of a series in the database.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New status
+        in: body
+        name: status
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ApiResponse'
+      summary: Update the status of a series
+      tags:
+      - series
+  /api/series/{id}/upvote:
+    patch:
+      description: Increases the ranking field of a series by 1.
+      parameters:
+      - description: Series ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.ApiResponse'
+      summary: Upvote a series
+      tags:
+      - series
+swagger: "2.0"
